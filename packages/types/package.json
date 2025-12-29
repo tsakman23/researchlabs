@@ -1,0 +1,14 @@
+{
+  "name": "@researchlabs/types",
+  "version": "0.1.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint .",
+    "clean": "rm -rf .turbo && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}
