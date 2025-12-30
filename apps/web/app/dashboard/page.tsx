@@ -67,8 +67,8 @@ export default async function DashboardPage() {
               </div>
 
               <div className="border border-gray-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-2">Profile</h3>
-                <p className="text-gray-600 text-sm mb-4">
+                <h3 className="text-lg font-semibold mb-2 text-gray-900">Profile</h3>
+                <p className="text-gray-700 text-sm mb-4">
                   Update your account settings
                 </p>
                 <a
