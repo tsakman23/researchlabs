@@ -1,6 +1,6 @@
 // Database types
 export type Workspace = {
-  id: number;
+  id: string; // UUID
   owner_id: string;
   name: string;
   description: string | null;
@@ -12,7 +12,7 @@ export type Workspace = {
 
 export type WorkspaceMember = {
   id: number;
-  workspace_id: number;
+  workspace_id: string; // UUID
   user_id: string;
   role: 'owner' | 'editor' | 'viewer';
   joined_at: string;
@@ -20,7 +20,7 @@ export type WorkspaceMember = {
 
 export type Document = {
   id: number;
-  workspace_id: number;
+  workspace_id: string; // UUID
   title: string;
   description: string | null;
   file_url: string | null;
@@ -35,7 +35,7 @@ export type Document = {
 
 export type Claim = {
   id: number;
-  workspace_id: number;
+  workspace_id: string; // UUID
   document_id: number;
   extracted_by: string | null;
   claim_text: string;
