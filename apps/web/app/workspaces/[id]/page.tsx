@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import type { Workspace, WorkspaceMember } from '@repo/types'
+import type { Workspace, WorkspaceMember } from '@researchlabs/types'
 
 interface WorkspaceWithMembers extends Workspace {
   workspace_members: Array<WorkspaceMember & {

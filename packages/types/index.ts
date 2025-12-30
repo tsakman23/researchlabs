@@ -4,7 +4,7 @@ export type Workspace = {
   owner_id: string;
   name: string;
   description: string | null;
-  privacy: 'private' | 'shared_link';
+  privacy: 'private' | 'public';
   created_at: string;
   updated_at: string;
   deleted_at: string | null;

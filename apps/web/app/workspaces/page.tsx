@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import type { Workspace } from '@repo/types'
+import type { Workspace } from '@researchlabs/types'
 
 export default function WorkspacesPage() {
   const router = useRouter()
