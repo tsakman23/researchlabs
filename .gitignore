@@ -8,3 +8,10 @@ coverage
 .DS_Store
 .vscode
 .idea
+
+# Playwright
+playwright-report/
+test-results/
+
+# PowerShell test scripts
+*.ps1
