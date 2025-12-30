@@ -44,7 +44,9 @@ export async function createTestUser(suffix: string = Date.now().toString()): Pr
   })
 
   if (authError || !authData.user) {
-    throw new Error(`Failed to create test user: ${authError?.message}`)
+    console.error('Auth error details:', authError)
+    console.error('Auth data:', authData)
+    throw new Error(`Failed to create test user: ${authError?.message || 'Unknown error'}. Email: ${email}`)
   }
 
   // Wait a bit for trigger to complete
