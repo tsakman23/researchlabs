@@ -18,10 +18,11 @@ To enable Google OAuth login in your ResearchLabs application, follow these step
    - Authorized JavaScript origins:
      - `http://localhost:3000`
      - `http://127.0.0.1:3000`
+     - `http://127.0.0.1:54321`
    - **Authorized redirect URIs (CRITICAL)**:
      - `http://127.0.0.1:54321/auth/v1/callback` (Supabase local auth endpoint)
      - `http://localhost:54321/auth/v1/callback` (Alternative)
-   - **Note**: These redirect to Supabase's auth service, which then redirects to your app at `/auth/callback`
+   - **Note**: These redirect to Supabase's auth service, which then redirects to your app automatically
 7. Click **Create** and save your Client ID and Client Secret
 
 ## 2. Configure Environment Variables
