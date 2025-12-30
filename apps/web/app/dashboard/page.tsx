@@ -18,21 +18,21 @@ export default async function DashboardPage() {
     .single()
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow">
+    <div className="min-h-screen bg-gray-900">
+      <nav className="bg-gray-800 shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-bold text-gray-900">ResearchLabs</h1>
+              <h1 className="text-xl font-bold text-white">ResearchLabs</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-700">
+              <span className="text-sm text-gray-300">
                 {profile?.display_name || user.email}
               </span>
               <form action="/auth/logout" method="post">
                 <button
                   type="submit"
-                  className="px-4 py-2 text-sm bg-gray-900 text-white rounded hover:bg-gray-800 cursor-pointer"
+                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
                 >
                   Sign out
                 </button>
@@ -44,18 +44,18 @@ export default async function DashboardPage() {
 
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <div className="bg-white shadow rounded-lg p-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          <div className="bg-gray-800 shadow rounded-lg p-6">
+            <h2 className="text-2xl font-bold text-white mb-4">
               Welcome to ResearchLabs!
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-300 mb-6">
               You're successfully signed in as <strong>{user.email}</strong>
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="border border-gray-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-2 text-gray-900">Workspaces</h3>
-                <p className="text-gray-600 text-sm mb-4">
+              <div className="border border-gray-700 rounded-lg p-6 bg-gray-700/50">
+                <h3 className="text-lg font-semibold mb-2 text-white">Workspaces</h3>
+                <p className="text-gray-300 text-sm mb-4">
                   Create and manage research workspaces
                 </p>
                 <a
@@ -66,9 +66,9 @@ export default async function DashboardPage() {
                 </a>
               </div>
 
-              <div className="border border-gray-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-2 text-gray-900">Profile</h3>
-                <p className="text-gray-700 text-sm mb-4">
+              <div className="border border-gray-700 rounded-lg p-6 bg-gray-700/50">
+                <h3 className="text-lg font-semibold mb-2 text-white">Profile</h3>
+                <p className="text-gray-300 text-sm mb-4">
                   Update your account settings
                 </p>
                 <a
@@ -80,9 +80,9 @@ export default async function DashboardPage() {
               </div>
             </div>
 
-            <div className="mt-8 p-4 bg-blue-50 rounded-lg">
-              <h3 className="font-semibold text-blue-900 mb-2">✅ Authentication Working!</h3>
-              <ul className="text-sm text-blue-800 space-y-1">
+            <div className="mt-8 p-4 bg-blue-900/30 border border-blue-800 rounded-lg">
+              <h3 className="font-semibold text-blue-300 mb-2">✅ Authentication Working!</h3>
+              <ul className="text-sm text-blue-200 space-y-1">
                 <li>• User ID: {user.id}</li>
                 <li>• Email: {user.email}</li>
                 <li>• Display Name: {profile?.display_name || 'Not set'}</li>

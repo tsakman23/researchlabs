@@ -1,4 +1,49 @@
+'use client'
+
+import { useRouter, useSearchParams } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
+import { useEffect, useState } from 'react'
+
 export default function Home() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const supabase = createClient()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const handleOAuthCallback = async () => {
+      const code = searchParams.get('code')
+      
+      // If there's a code in the URL, exchange it for a session
+      if (code) {
+        const { error } = await supabase.auth.exchangeCodeForSession(code)
+        if (!error) {
+          // Successfully authenticated, redirect to dashboard
+          router.push('/dashboard')
+          return
+        }
+      }
+      
+      // Check if user is already logged in
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session) {
+        router.push('/dashboard')
+      } else {
+        setLoading(false)
+      }
+    }
+    
+    handleOAuthCallback()
+  }, [searchParams, router, supabase])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+        <p className="text-gray-600">Loading...</p>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="text-center">

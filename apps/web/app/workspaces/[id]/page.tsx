@@ -118,7 +118,7 @@ export default function WorkspaceDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-8">
+      <div className="min-h-screen p-8">
         <div className="max-w-4xl mx-auto">
           <p>Loading workspace...</p>
         </div>
@@ -128,7 +128,7 @@ export default function WorkspaceDetailPage() {
 
   if (!workspace) {
     return (
-      <div className="min-h-screen bg-gray-50 p-8">
+      <div className="min-h-screen p-8">
         <div className="max-w-4xl mx-auto">
           <p>Workspace not found</p>
         </div>
@@ -137,7 +137,7 @@ export default function WorkspaceDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen p-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
           <button
@@ -148,12 +148,12 @@ export default function WorkspaceDetailPage() {
           </button>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div className="bg-gray-800 rounded-lg shadow-md p-6 mb-6 border border-gray-700">
           {editing ? (
             <form onSubmit={handleUpdate} className="space-y-4">
               <h2 className="text-2xl font-bold mb-4">Edit Workspace</h2>
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-300">
                   Workspace Name *
                 </label>
                 <input
@@ -161,12 +161,12 @@ export default function WorkspaceDetailPage() {
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white"
                   required
                 />
               </div>
               <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="description" className="block text-sm font-medium text-gray-300">
                   Description
                 </label>
                 <textarea
@@ -174,18 +174,18 @@ export default function WorkspaceDetailPage() {
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white"
                 />
               </div>
               <div>
-                <label htmlFor="privacy" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="privacy" className="block text-sm font-medium text-gray-300">
                   Privacy
                 </label>
                 <select
                   id="privacy"
                   value={formData.privacy}
                   onChange={(e) => setFormData({ ...formData, privacy: e.target.value as 'public' | 'private' })}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white"
                 >
                   <option value="private">Private</option>
                   <option value="public">Public</option>
@@ -202,7 +202,7 @@ export default function WorkspaceDetailPage() {
                 <button
                   type="button"
                   onClick={cancelEdit}
-                  className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                  className="flex-1 px-4 py-2 bg-gray-700 text-gray-200 rounded-lg hover:bg-gray-600"
                 >
                   Cancel
                 </button>
@@ -213,19 +213,19 @@ export default function WorkspaceDetailPage() {
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h1 className="text-3xl font-bold text-gray-900">{workspace.name}</h1>
+                    <h1 className="text-3xl font-bold">{workspace.name}</h1>
                     <span className={`px-2 py-1 text-xs rounded ${
                       workspace.privacy === 'public' 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-gray-100 text-gray-800'
+                        ? 'bg-green-900 text-green-300' 
+                        : 'bg-gray-700 text-gray-300'
                     }`}>
                       {workspace.privacy}
                     </span>
                   </div>
                   {workspace.description && (
-                    <p className="text-gray-600">{workspace.description}</p>
+                    <p className="text-gray-300">{workspace.description}</p>
                   )}
-                  <p className="text-sm text-gray-500 mt-2">
+                  <p className="text-sm text-gray-400 mt-2">
                     Created {new Date(workspace.created_at).toLocaleDateString()}
                   </p>
                 </div>
@@ -249,21 +249,21 @@ export default function WorkspaceDetailPage() {
           )}
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-gray-800 rounded-lg shadow-md p-6 border border-gray-700">
           <h2 className="text-xl font-semibold mb-4">Members ({workspace.workspace_members.length})</h2>
           <div className="space-y-3">
             {workspace.workspace_members.map((member) => (
-              <div key={member.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div key={member.id} className="flex items-center justify-between p-3 bg-gray-700 rounded-lg">
                 <div>
-                  <p className="font-medium text-gray-900">
+                  <p className="font-medium">
                     {member.users.display_name || member.users.email}
                   </p>
-                  <p className="text-sm text-gray-500">{member.users.email}</p>
+                  <p className="text-sm text-gray-400">{member.users.email}</p>
                 </div>
                 <span className={`px-3 py-1 text-sm rounded ${
                   member.role === 'owner' 
-                    ? 'bg-blue-100 text-blue-800' 
-                    : 'bg-gray-100 text-gray-800'
+                    ? 'bg-blue-900 text-blue-300' 
+                    : 'bg-gray-600 text-gray-300'
                 }`}>
                   {member.role}
                 </span>
@@ -272,24 +272,24 @@ export default function WorkspaceDetailPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6 mt-6">
+        <div className="bg-gray-800 rounded-lg shadow-md p-6 mt-6 border border-gray-700">
           <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <button
               onClick={() => router.push(`/workspaces/${workspaceId}/documents`)}
-              className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors text-left"
+              className="p-4 border-2 border-gray-700 rounded-lg hover:border-blue-500 hover:bg-gray-700 transition-colors text-left"
             >
               <div className="text-2xl mb-2">📄</div>
-              <div className="font-semibold text-gray-900">Documents</div>
-              <div className="text-sm text-gray-600">View and upload research documents</div>
+              <div className="font-semibold">Documents</div>
+              <div className="text-sm text-gray-400">View and upload research documents</div>
             </button>
             <button
-              className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors text-left opacity-50 cursor-not-allowed"
+              className="p-4 border-2 border-gray-700 rounded-lg hover:border-blue-500 hover:bg-gray-700 transition-colors text-left opacity-50 cursor-not-allowed"
               disabled
             >
               <div className="text-2xl mb-2">💬</div>
-              <div className="font-semibold text-gray-900">Chat</div>
-              <div className="text-sm text-gray-600">Coming soon...</div>
+              <div className="font-semibold">Chat</div>
+              <div className="text-sm text-gray-400">Coming soon...</div>
             </button>
           </div>
         </div>

@@ -137,7 +137,7 @@ export default function WorkspaceDocumentsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-8">
+      <div className="min-h-screen p-8">
         <div className="max-w-6xl mx-auto">
           <p>Loading documents...</p>
         </div>
@@ -146,12 +146,12 @@ export default function WorkspaceDocumentsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen p-8">
       <div className="max-w-6xl mx-auto">
         <div className="mb-6">
           <button
             onClick={() => router.push(`/workspaces/${workspaceId}`)}
-            className="text-blue-600 hover:text-blue-800"
+            className="text-blue-400 hover:text-blue-300"
           >
             ← Back to Workspace
           </button>
@@ -159,8 +159,8 @@ export default function WorkspaceDocumentsPage() {
 
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Documents</h1>
-            <p className="text-gray-600 mt-1">{documents.length} document{documents.length !== 1 ? 's' : ''}</p>
+            <h1 className="text-3xl font-bold">Documents</h1>
+            <p className="text-gray-300 mt-1">{documents.length} document{documents.length !== 1 ? 's' : ''}</p>
           </div>
           <button
             onClick={() => setShowUploadForm(!showUploadForm)}
@@ -171,12 +171,12 @@ export default function WorkspaceDocumentsPage() {
         </div>
 
         {showUploadForm && (
-          <div className="bg-white p-6 rounded-lg shadow-md mb-8">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-md mb-8 border border-gray-700">
             <h2 className="text-xl font-semibold mb-4">Upload Document</h2>
             <form onSubmit={handleUpload} className="space-y-4">
               <div
                 className={`border-2 border-dashed rounded-lg p-8 text-center ${
-                  dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
+                  dragActive ? 'border-blue-500 bg-blue-900/20' : 'border-gray-600'
                 }`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
@@ -187,19 +187,19 @@ export default function WorkspaceDocumentsPage() {
                   <div>
                     <p className="text-2xl mb-2">{getFileIcon(selectedFile.type === 'application/pdf' ? 'pdf' : 'text')}</p>
                     <p className="font-medium">{selectedFile.name}</p>
-                    <p className="text-sm text-gray-500">{formatFileSize(selectedFile.size)}</p>
+                    <p className="text-sm text-gray-400">{formatFileSize(selectedFile.size)}</p>
                     <button
                       type="button"
                       onClick={() => setSelectedFile(null)}
-                      className="mt-2 text-sm text-red-600 hover:text-red-800"
+                      className="mt-2 text-sm text-red-400 hover:text-red-300"
                     >
                       Remove
                     </button>
                   </div>
                 ) : (
                   <div>
-                    <p className="text-gray-600 mb-2">Drag and drop a file here, or</p>
-                    <label className="cursor-pointer text-blue-600 hover:text-blue-800">
+                    <p className="text-gray-300 mb-2">Drag and drop a file here, or</p>
+                    <label className="cursor-pointer text-blue-400 hover:text-blue-300">
                       <span>choose a file</span>
                       <input
                         type="file"
@@ -208,13 +208,13 @@ export default function WorkspaceDocumentsPage() {
                         className="hidden"
                       />
                     </label>
-                    <p className="text-xs text-gray-500 mt-2">PDF, TXT, or DOCX (max 50MB)</p>
+                    <p className="text-xs text-gray-400 mt-2">PDF, TXT, or DOCX (max 50MB)</p>
                   </div>
                 )}
               </div>
 
               <div>
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="title" className="block text-sm font-medium text-gray-300">
                   Title *
                 </label>
                 <input
@@ -222,13 +222,13 @@ export default function WorkspaceDocumentsPage() {
                   id="title"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white"
                   required
                 />
               </div>
 
               <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="description" className="block text-sm font-medium text-gray-300">
                   Description
                 </label>
                 <textarea
@@ -236,19 +236,19 @@ export default function WorkspaceDocumentsPage() {
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white"
                 />
               </div>
 
               {uploading && (
                 <div className="space-y-2">
-                  <div className="w-full bg-gray-200 rounded-full h-2.5">
+                  <div className="w-full bg-gray-700 rounded-full h-2.5">
                     <div
                       className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
                       style={{ width: `${uploadProgress}%` }}
                     ></div>
                   </div>
-                  <p className="text-sm text-gray-600 text-center">Uploading... {uploadProgress}%</p>
+                  <p className="text-sm text-gray-300 text-center">Uploading... {uploadProgress}%</p>
                 </div>
               )}
 
@@ -264,8 +264,8 @@ export default function WorkspaceDocumentsPage() {
         )}
 
         {documents.length === 0 ? (
-          <div className="bg-white p-8 rounded-lg shadow-md text-center">
-            <p className="text-gray-600 mb-4">No documents yet.</p>
+          <div className="bg-gray-800 p-8 rounded-lg shadow-md text-center border border-gray-700">
+            <p className="text-gray-300 mb-4">No documents yet.</p>
             <button
               onClick={() => setShowUploadForm(true)}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -278,23 +278,23 @@ export default function WorkspaceDocumentsPage() {
             {documents.map((doc) => (
               <div
                 key={doc.id}
-                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                className="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-700"
               >
                 <div className="flex items-start gap-4">
                   <div className="text-4xl">{getFileIcon(doc.file_type)}</div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900">{doc.title}</h3>
+                    <h3 className="text-lg font-semibold">{doc.title}</h3>
                     {doc.description && (
-                      <p className="text-gray-600 text-sm mt-1">{doc.description}</p>
+                      <p className="text-gray-300 text-sm mt-1">{doc.description}</p>
                     )}
-                    <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+                    <div className="flex items-center gap-4 mt-2 text-sm text-gray-400">
                       <span>{formatFileSize(doc.file_size)}</span>
                       <span>•</span>
                       <span>{new Date(doc.created_at).toLocaleDateString()}</span>
                     </div>
                   </div>
                   <button
-                    className="px-4 py-2 text-blue-600 hover:text-blue-800 font-medium"
+                    className="px-4 py-2 text-blue-400 hover:text-blue-300 font-medium"
                     onClick={() => {
                       // Download functionality will be added later
                       alert('Download functionality coming soon')

@@ -141,37 +141,107 @@ This document tracks the step-by-step progress of building the ResearchLabs MVP 
 
 ---
 
-### Task 3: Authentication System
+### ✅ Task 3: Authentication System (Updated)
 
-**Status**: Not started
+**Completed**: December 30, 2025
 
-**Todo**:
-- [ ] Configure Supabase Auth for email/password
-- [ ] Create login page
-- [ ] Create signup page
-- [ ] Implement session management
-- [ ] Create protected route middleware
-- [ ] Test authentication flow
+**What was done**:
+- ✅ Google OAuth integration completed
+- ✅ Created OAuth callback handler at /auth/callback
+- ✅ Updated login and signup pages with Google OAuth button
+- ✅ Configured Supabase config.toml for Google OAuth
+- ✅ Tested OAuth redirect flow
+
+**Files updated**:
+- `apps/web/app/auth/callback/route.ts` (created)
+- `apps/web/app/auth/login/page.tsx` (already had Google OAuth)
+- `apps/web/app/auth/signup/page.tsx` (already had Google OAuth)
+- `supabase/config.toml` (Google OAuth configuration)
+
+**Next steps**: Continue with more advanced features
 
 ---
 
 ## Phase 3: Core Features
 
-### Task 4: Workspace Management
+### ✅ Task 4: Workspace Management (Completed)
 
-**Status**: Not started
+**Completed**: December 30, 2025
 
-### Task 5: Document Upload & Storage
+**What was done**:
+- ✅ API route POST /api/workspaces (create workspace)
+- ✅ API route GET /api/workspaces (list workspaces)
+- ✅ API route GET /api/workspaces/[id] (get workspace details)
+- ✅ API route PATCH /api/workspaces/[id] (update workspace)
+- ✅ API route DELETE /api/workspaces/[id] (delete workspace)
+- ✅ Workspace listing page with create form
+- ✅ Individual workspace detail page with edit/delete
+- ✅ Workspace member management (invite, remove)
+- ✅ API routes for workspace members
 
-**Status**: Not started
+**Files created/updated**:
+- `apps/web/app/api/workspaces/route.ts`
+- `apps/web/app/api/workspaces/[id]/route.ts`
+- `apps/web/app/api/workspaces/[id]/members/route.ts`
+- `apps/web/app/workspaces/page.tsx`
+- `apps/web/app/workspaces/[id]/page.tsx`
 
-### Task 6: Mock Claim Extraction
+### ✅ Task 5: Document Upload & Storage (Completed)
 
-**Status**: Not started
+**Completed**: December 30, 2025
 
-### Task 7: Claims Management UI
+**What was done**:
+- ✅ Supabase Storage bucket 'documents' configured with RLS
+- ✅ API route POST /api/workspaces/[id]/documents (upload)
+- ✅ API route GET /api/workspaces/[id]/documents (list)
+- ✅ Document upload UI with drag-and-drop
+- ✅ Document listing page
+- ✅ File validation (type, size)
+- ✅ Storage policies for workspace members
 
-**Status**: Not started
+**Files created**:
+- `apps/web/app/api/workspaces/[id]/documents/route.ts`
+- `apps/web/app/workspaces/[id]/documents/page.tsx`
+- `supabase/migrations/20231230000003_create_documents_storage.sql`
+
+### ✅ Task 6: Mock Claim Extraction (Completed)
+
+**Completed**: December 30, 2025
+
+**What was done**:
+- ✅ Created mock claim extraction system
+- ✅ Simple text parsing to identify claims
+- ✅ Confidence score calculation
+- ✅ Mock embedding generation (1536-dimensional vectors)
+- ✅ API route POST /api/documents/[id]/extract
+- ✅ Contradiction detection heuristics
+
+**Files created**:
+- `apps/web/lib/claims/mock-extractor.ts`
+- `apps/web/app/api/documents/[id]/extract/route.ts`
+
+**Features**:
+- Extracts declarative statements from text
+- Assigns confidence scores based on linguistic indicators
+- Generates deterministic mock embeddings
+- Simple contradiction detection using negation and opposite terms
+
+### ✅ Task 7: Claims Management UI (Completed)
+
+**Completed**: December 30, 2025
+
+**What was done**:
+- ✅ Claims listing page with filters
+- ✅ Filter by status (extracted, verified, disputed, needs_review)
+- ✅ Filter by confidence score
+- ✅ Update claim status from UI
+- ✅ API route GET /api/workspaces/[id]/claims
+- ✅ API route PATCH /api/claims/[id]/status
+
+**Files created**:
+- `apps/web/app/workspaces/[id]/claims/page.tsx`
+- `apps/web/app/api/workspaces/[id]/claims/route.ts`
+- `apps/web/app/api/claims/[id]/status/route.ts`
 
 ### Task 8: Basic Text Editor
 

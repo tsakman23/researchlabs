@@ -40,10 +40,7 @@ export async function POST(
         user_id,
         role
       })
-      .select(`
-        *,
-        users(id, email, display_name)
-      `)
+      .select()
       .single()
 
     if (error) {
@@ -53,7 +50,19 @@ export async function POST(
       return NextResponse.json({ error: error.message }, { status: 400 })
     }
 
-    return NextResponse.json({ member }, { status: 201 })
+    // Fetch user details separately
+    const { data: userData } = await supabase
+      .from('users')
+      .select('id, email, display_name')
+      .eq('id', user_id)
+      .single()
+
+    return NextResponse.json({ 
+      member: {
+        ...member,
+        users: userData
+      }
+    }, { status: 201 })
   } catch (error) {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
   }
@@ -62,7 +71,7 @@ export async function POST(
 // GET /api/workspaces/[id]/members - List workspace members
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const supabase = await createClient()
   
@@ -72,24 +81,35 @@ export async function GET(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const workspaceId = parseInt(params.id)
-
-  if (isNaN(workspaceId)) {
-    return NextResponse.json({ error: 'Invalid workspace ID' }, { status: 400 })
-  }
+  const { id } = await params
+  const workspaceId = id // UUID string
 
   // Get all members of the workspace
   const { data: members, error } = await supabase
     .from('workspace_members')
-    .select(`
-      *,
-      users(id, email, display_name)
-    `)
+    .select('*')
     .eq('workspace_id', workspaceId)
     .order('joined_at', { ascending: false })
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 400 })
+  }
+
+  // Fetch user details separately
+  if (members && members.length > 0) {
+    const userIds = members.map(m => m.user_id)
+    const { data: users } = await supabase
+      .from('users')
+      .select('id, email, display_name')
+      .in('id', userIds)
+    
+    // Attach user data
+    const membersWithUsers = members.map(member => ({
+      ...member,
+      users: users?.find(u => u.id === member.user_id) || null
+    }))
+    
+    return NextResponse.json({ members: membersWithUsers })
   }
 
   return NextResponse.json({ members })

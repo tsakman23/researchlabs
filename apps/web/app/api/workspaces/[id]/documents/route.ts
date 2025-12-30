@@ -7,7 +7,7 @@ const ALLOWED_TYPES = ['application/pdf', 'text/plain', 'application/vnd.openxml
 // GET /api/workspaces/[id]/documents - List documents in workspace
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const supabase = await createClient()
   
@@ -17,11 +17,8 @@ export async function GET(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const workspaceId = parseInt(params.id)
-
-  if (isNaN(workspaceId)) {
-    return NextResponse.json({ error: 'Invalid workspace ID' }, { status: 400 })
-  }
+  const { id } = await params
+  const workspaceId = id // UUID string
 
   // Get all documents in the workspace
   const { data: documents, error } = await supabase
@@ -41,7 +38,7 @@ export async function GET(
 // POST /api/workspaces/[id]/documents - Upload document
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const supabase = await createClient()
   
@@ -51,11 +48,8 @@ export async function POST(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const workspaceId = parseInt(params.id)
-
-  if (isNaN(workspaceId)) {
-    return NextResponse.json({ error: 'Invalid workspace ID' }, { status: 400 })
-  }
+  const { id } = await params
+  const workspaceId = id // UUID string
 
   try {
     const formData = await request.formData()
@@ -123,9 +117,23 @@ export async function POST(
       .single()
 
     if (dbError) {
+      console.error('Database error:', dbError)
+      console.error('User ID:', user.id)
+      console.error('Workspace ID:', workspaceId)
+      
+      // Check if user is a member
+      const { data: membership } = await supabase
+        .from('workspace_members')
+        .select('*')
+        .eq('workspace_id', workspaceId)
+        .eq('user_id', user.id)
+        .single()
+      
+      console.error('User membership:', membership)
+      
       // Clean up uploaded file if database insert fails
       await supabase.storage.from('documents').remove([fileName])
-      return NextResponse.json({ error: dbError.message }, { status: 400 })
+      return NextResponse.json({ error: dbError.message, details: dbError }, { status: 400 })
     }
 
     return NextResponse.json({ document }, { status: 201 })
