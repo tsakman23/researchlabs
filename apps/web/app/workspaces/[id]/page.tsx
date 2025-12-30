@@ -271,6 +271,28 @@ export default function WorkspaceDetailPage() {
             ))}
           </div>
         </div>
+
+        <div className="bg-white rounded-lg shadow-md p-6 mt-6">
+          <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <button
+              onClick={() => router.push(`/workspaces/${workspaceId}/documents`)}
+              className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors text-left"
+            >
+              <div className="text-2xl mb-2">📄</div>
+              <div className="font-semibold text-gray-900">Documents</div>
+              <div className="text-sm text-gray-600">View and upload research documents</div>
+            </button>
+            <button
+              className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors text-left opacity-50 cursor-not-allowed"
+              disabled
+            >
+              <div className="text-2xl mb-2">💬</div>
+              <div className="font-semibold text-gray-900">Chat</div>
+              <div className="text-sm text-gray-600">Coming soon...</div>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )
