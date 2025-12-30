@@ -32,7 +32,7 @@ export default async function DashboardPage() {
               <form action="/auth/logout" method="post">
                 <button
                   type="submit"
-                  className="px-4 py-2 text-sm text-gray-700 hover:text-gray-900"
+                  className="px-4 py-2 text-sm bg-gray-900 text-white rounded hover:bg-gray-800 cursor-pointer"
                 >
                   Sign out
                 </button>
@@ -54,13 +54,13 @@ export default async function DashboardPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="border border-gray-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-2">Workspaces</h3>
+                <h3 className="text-lg font-semibold mb-2 text-gray-900">Workspaces</h3>
                 <p className="text-gray-600 text-sm mb-4">
                   Create and manage research workspaces
                 </p>
                 <a
                   href="/workspaces"
-                  className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                  className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
                 >
                   View Workspaces
                 </a>
@@ -73,7 +73,7 @@ export default async function DashboardPage() {
                 </p>
                 <a
                   href="/profile"
-                  className="inline-block px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+                  className="inline-block px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 cursor-pointer"
                 >
                   Edit Profile
                 </a>
