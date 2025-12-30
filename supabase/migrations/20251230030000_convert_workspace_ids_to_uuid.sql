@@ -1,6 +1,9 @@
 -- Migration: Convert workspace IDs to UUID
 -- This migration converts all workspace-related tables from BIGSERIAL to UUID
 
+-- Use gen_random_uuid() which is built-in to PostgreSQL 13+
+-- No extension needed
+
 -- 1. Drop all policies that reference workspace_id
 DROP POLICY IF EXISTS "Users can view workspaces" ON workspaces;
 DROP POLICY IF EXISTS "Owners can update their workspaces" ON workspaces;
@@ -29,7 +32,7 @@ ALTER TABLE collaborative_documents DROP CONSTRAINT IF EXISTS collaborative_docu
 ALTER TABLE chat_sessions DROP CONSTRAINT IF EXISTS chat_sessions_workspace_id_fkey;
 
 -- Create new UUID columns
-ALTER TABLE workspaces ADD COLUMN id_uuid UUID DEFAULT uuid_generate_v4();
+ALTER TABLE workspaces ADD COLUMN id_uuid UUID DEFAULT gen_random_uuid();
 ALTER TABLE workspace_members ADD COLUMN workspace_id_uuid UUID;
 ALTER TABLE documents ADD COLUMN workspace_id_uuid UUID;
 ALTER TABLE claims ADD COLUMN workspace_id_uuid UUID;
@@ -38,7 +41,7 @@ ALTER TABLE collaborative_documents ADD COLUMN workspace_id_uuid UUID;
 ALTER TABLE chat_sessions ADD COLUMN workspace_id_uuid UUID;
 
 -- Populate UUID columns with generated UUIDs, mapping old IDs to new UUIDs
-UPDATE workspaces SET id_uuid = uuid_generate_v4();
+UPDATE workspaces SET id_uuid = gen_random_uuid();
 
 UPDATE workspace_members wm
 SET workspace_id_uuid = w.id_uuid
