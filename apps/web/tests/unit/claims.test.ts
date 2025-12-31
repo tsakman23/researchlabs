@@ -216,7 +216,7 @@ describe('Claims API', () => {
 
   describe('Claim Embeddings', () => {
     it('should store embeddings as vector', async () => {
-      const mockEmbedding = Array(1536).fill(0.1)
+      const mockEmbedding = Array(768).fill(0.1)
 
       const { data: claim } = await supabaseAdmin
         .from('claims')
@@ -225,13 +225,20 @@ describe('Claims API', () => {
           workspace_id: testWorkspace.id,
           claim_text: 'Embedding test claim',
           confidence_score: 0.9,
-          embedding: JSON.stringify(mockEmbedding),
+          embedding: mockEmbedding, // PostgreSQL accepts arrays directly for vector type
           extracted_by: testUser1.id
         })
         .select()
         .single()
 
       expect(claim!.embedding).toBeDefined()
+      expect(Array.isArray(claim!.embedding) || typeof claim!.embedding === 'string').toBe(true)
+      // Vector type may be returned as string or array depending on client
+      if (typeof claim!.embedding === 'string') {
+        expect(claim!.embedding.length).toBeGreaterThan(0)
+      } else {
+        expect(claim!.embedding.length).toBe(768)
+      }
     })
   })
 

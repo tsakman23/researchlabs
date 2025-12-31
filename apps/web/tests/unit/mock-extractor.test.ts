@@ -135,7 +135,7 @@ Third paragraph with more claims. Evidence supports the hypothesis.`
     it('should generate 1536-dimensional vector', () => {
       const embedding = generateMockEmbedding('test text')
 
-      expect(embedding).toHaveLength(1536)
+      expect(embedding).toHaveLength(768)
     })
 
     it('should generate unit vector (magnitude ≈ 1)', () => {
@@ -173,7 +173,7 @@ Third paragraph with more claims. Evidence supports the hypothesis.`
     it('should handle empty string', () => {
       const embedding = generateMockEmbedding('')
 
-      expect(embedding).toHaveLength(1536)
+      expect(embedding).toHaveLength(768)
       expect(embedding.every(val => !isNaN(val))).toBe(true)
     })
 
@@ -182,7 +182,7 @@ Third paragraph with more claims. Evidence supports the hypothesis.`
 
       const embedding = generateMockEmbedding(longText)
 
-      expect(embedding).toHaveLength(1536)
+      expect(embedding).toHaveLength(768)
     })
   })
 
@@ -370,7 +370,7 @@ Third paragraph with more claims. Evidence supports the hypothesis.`
       }))
 
       expect(claimsWithEmbeddings.every(c => c.embedding !== null)).toBe(true)
-      expect(claimsWithEmbeddings.every(c => c.embedding!.length === 1536)).toBe(true)
+      expect(claimsWithEmbeddings.every(c => c.embedding!.length === 768)).toBe(true)
     })
 
     it('should extract claims and detect contradictions', async () => {
@@ -416,7 +416,7 @@ However, some reports suggest that temperature increases are not uniform across 
       // Verify structure
       expect(claims.every(c => c.claim_text.length > 0)).toBe(true)
       expect(claims.every(c => c.confidence_score >= 0 && c.confidence_score <= 1)).toBe(true)
-      expect(claimsWithEmbeddings.every(c => c.embedding!.length === 1536)).toBe(true)
+      expect(claimsWithEmbeddings.every(c => c.embedding!.length === 768)).toBe(true)
     })
   })
 })
