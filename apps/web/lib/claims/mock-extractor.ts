@@ -8,8 +8,10 @@
  * 1. Splits text into sentences
  * 2. Identifies declarative statements
  * 3. Assigns confidence scores
- * 4. Generates simple embeddings
+ * 4. Generates embeddings using OpenAI
  */
+
+import { generateEmbeddings } from '@/lib/embeddings'
 
 export interface ExtractedClaim {
   claim_text: string
@@ -72,11 +74,25 @@ export async function extractClaims(text: string, fileType: string): Promise<Ext
           source_page_num: null, // Would extract from PDF metadata
           source_paragraph_num: paragraphIndex + 1,
           confidence_score: parseFloat(confidence.toFixed(2)),
-          embedding: null // Would generate with OpenAI embeddings API
+          embedding: null // Will be generated after all claims are extracted
         })
       }
     })
   })
+  
+  // Generate embeddings for all claims in batch
+  if (claims.length > 0) {
+    try {
+      const claimTexts = claims.map(c => c.claim_text)
+      const embeddings = await generateEmbeddings(claimTexts)
+      claims.forEach((claim, i) => {
+        claim.embedding = embeddings[i]
+      })
+    } catch (error) {
+      console.error('Failed to generate embeddings for claims:', error)
+      // Continue without embeddings rather than failing completely
+    }
+  }
   
   return claims
 }
@@ -105,12 +121,12 @@ export async function extractTextFromFile(file: ArrayBuffer, fileType: string): 
 }
 
 /**
- * Generate a simple mock embedding vector
- * In production, this would use OpenAI's embedding API
+ * Generate a simple mock embedding vector for testing
+ * Returns 768 dimensions to match all-mpnet-base-v2
  */
 export function generateMockEmbedding(text: string): number[] {
-  // Generate a 1536-dimensional vector (matching OpenAI's ada-002)
-  const dimension = 1536
+  // Generate a 768-dimensional vector (matching all-mpnet-base-v2)
+  const dimension = 768
   const embedding: number[] = []
   
   // Use text hash to generate deterministic but pseudo-random vector

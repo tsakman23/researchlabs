@@ -37,14 +37,12 @@ interface SearchResponse {
   claims: SearchResult[]
   contradictions: Contradiction[]
   query: string
-  threshold: number
   count: number
 }
 
 export default function SearchPage() {
   const [query, setQuery] = useState('')
   const [workspaceId, setWorkspaceId] = useState('')
-  const [threshold, setThreshold] = useState(0.7)
   const [results, setResults] = useState<SearchResponse | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -84,7 +82,6 @@ export default function SearchPage() {
     try {
       const params = new URLSearchParams({
         q: query,
-        threshold: threshold.toString(),
         limit: '50'
       })
       
@@ -145,45 +142,23 @@ export default function SearchPage() {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="workspace" className="block text-sm font-medium text-gray-700 mb-2">
-                  Workspace (Optional)
-                </label>
-                <select
-                  id="workspace"
-                  value={workspaceId}
-                  onChange={(e) => setWorkspaceId(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                >
-                  <option value="">All Workspaces</option>
-                  {workspaces.map((ws) => (
-                    <option key={ws.id} value={ws.id}>
-                      {ws.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="threshold" className="block text-sm font-medium text-gray-700 mb-2">
-                  Similarity Threshold: {threshold.toFixed(2)}
-                </label>
-                <input
-                  id="threshold"
-                  type="range"
-                  min="0.5"
-                  max="0.95"
-                  step="0.05"
-                  value={threshold}
-                  onChange={(e) => setThreshold(parseFloat(e.target.value))}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-gray-500 mt-1">
-                  <span>More results</span>
-                  <span>More precise</span>
-                </div>
-              </div>
+            <div>
+              <label htmlFor="workspace" className="block text-sm font-medium text-gray-700 mb-2">
+                Workspace (Optional)
+              </label>
+              <select
+                id="workspace"
+                value={workspaceId}
+                onChange={(e) => setWorkspaceId(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+              >
+                <option value="">All Workspaces</option>
+                {workspaces.map((ws) => (
+                  <option key={ws.id} value={ws.id}>
+                    {ws.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <button
@@ -217,28 +192,30 @@ export default function SearchPage() {
             {results.claims.length === 0 ? (
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
                 <p className="text-gray-600">
-                  No claims found matching your search criteria. Try lowering the similarity threshold.
+                  No claims found matching your search. Try a different query or select a different workspace.
                 </p>
               </div>
             ) : (
               <>
                 <div className="space-y-4">
-                  <h3 className="text-xl font-semibold text-gray-900">Claims</h3>
-                  {results.claims.map((claim) => (
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    {results.count} {results.count === 1 ? 'result' : 'results'} for "{results.query}"
+                  </h3>
+                  {results.claims.map((claim, index) => (
                     <div
                       key={claim.id}
                       className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
                     >
                       <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-3">
+                          <span className="text-sm font-medium text-gray-900">
+                            #{index + 1}
+                          </span>
                           <span className={`px-2 py-1 text-xs font-medium rounded ${getStatusColor(claim.status)}`}>
                             {claim.status}
                           </span>
                           <span className="text-xs text-gray-500">
-                            Similarity: {(claim.similarity * 100).toFixed(1)}%
-                          </span>
-                          <span className="text-xs text-gray-500">
-                            Confidence: {(claim.confidence_score * 100).toFixed(0)}%
+                            {(claim.similarity * 100).toFixed(0)}% match
                           </span>
                         </div>
                         <Link

@@ -1,13 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
-import { generateMockEmbedding } from '@/lib/claims/mock-extractor'
+import { generateEmbedding } from '@/lib/embeddings'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const query = searchParams.get('q')
   const workspaceId = searchParams.get('workspace_id')
-  const threshold = parseFloat(searchParams.get('threshold') || '0.7')
-  const limit = parseInt(searchParams.get('limit') || '20')
+  const limit = parseInt(searchParams.get('limit') || '50')
 
   if (!query) {
     return NextResponse.json(
@@ -25,14 +24,14 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Generate embedding for the search query
-    const queryEmbedding = generateMockEmbedding(query)
+    // Generate embedding for the search query using OpenAI
+    const queryEmbedding = await generateEmbedding(query)
     const embeddingString = `[${queryEmbedding.join(',')}]`
 
-    // Build the query with optional workspace filter
+    // Search with no threshold - just return top results ranked by similarity
     let queryBuilder = supabase.rpc('search_claims', {
       query_embedding: embeddingString,
-      similarity_threshold: threshold,
+      similarity_threshold: 0.0, // No threshold, return all results
       max_results: limit
     })
 
@@ -71,7 +70,6 @@ export async function GET(request: NextRequest) {
       claims: claims || [],
       contradictions,
       query,
-      threshold,
       count: claims?.length || 0
     })
   } catch (err) {
